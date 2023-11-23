@@ -1,0 +1,475 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 7px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #9f9f9f; 
+}
+
+
+
+
+body{
+    background: #F1F5F7;
+    background-image: url('../images/striped-background.png');
+    font-family: 'Raleway', sans-serif;
+}
+
+p{
+    color: #000000;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.container{
+max-width: 1440px;
+}
+
+nav.navbar{
+    box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.06);
+    min-height: 90px;
+}
+
+.user-name{
+    font-size: 18px;
+
+}
+.user-name span{
+    font-weight: 700;
+    color: #000000;
+}
+
+.logout{
+    background-color: #D5F7FF;
+    padding: 10px 12px 10px 11px;
+    border-radius: 50%;
+    transition-duration: .3s;
+}
+
+.logout:hover{
+    background: #FFD0D0;
+    
+}
+
+
+a.create-button{
+    font-weight: 500;
+    font-size: 16px;
+    background: #172133;
+    border-radius: 20px;
+    color: #fff;
+    padding: 10px 26px;
+    transition-duration: .3s;
+    height: 40px;
+    line-height: 19px;
+}
+
+.title{
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 29px;
+    padding-left: 14px;
+}
+
+a.create-button:hover{
+    background: #0EC2EA;
+    transition-duration: .3s;
+}
+
+a.list-button{
+    font-weight: 500;
+    font-size: 16px;
+    background: #0EC2EA;
+    border-radius: 20px;
+    color: #fff;
+    padding: 10px 26px;
+    transition-duration: .3s;
+    height: 40px;
+    line-height: 19px;
+}
+
+a.list-button:hover{
+    background: #172133;
+    color: #fff;
+    transition-duration: .3s;
+}
+
+.table-container{
+    background: #FFFFFF;
+    box-shadow: 0px 6px 15px rgba(14, 80, 158, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.table>thead {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    box-shadow: 0px 0px 0.5px #dadada;
+}
+
+th,td{
+    padding: 17px !important;
+}
+
+.form-check-input:checked[type=checkbox] {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    background-color: #0EC2EA;
+    border-color: #0EC2EA;
+}
+
+.form-check-input[type=checkbox] {
+    border-radius: 10px;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+}
+
+.form-check-input:focus {
+    box-shadow:none;
+}
+
+thead{
+    font-size: 16px;
+}
+
+
+.tbl-btn{
+    font-weight: 600;
+font-size: 12px;
+line-height: 14px;
+color: #FFFFFF;
+
+border-radius: 11.5px;
+padding: 4.5px 15.5px;
+
+}
+
+.edit{
+    background: linear-gradient(180deg, #FFAB09 0%, #FFC909 100%);
+}
+
+.edit:hover{
+    background: #FF8A00;
+    color: #fff;
+}
+
+.download{
+    background: linear-gradient(180deg, #00B700 0%, #A8CE0E 100%);
+}
+
+.download:hover{
+    background: #00B700;
+    color: #fff;
+}
+
+.delete{
+    background: linear-gradient(180deg, #EB2631 0%, #EB6D26 100%);
+}
+
+.delete:hover{
+    background: #EB2631;
+    color: #fff;
+}
+
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #FAFAFA;
+ }
+
+ 
+
+ .table-striped>tbody>tr:nth-of-type(odd)>* {
+    --bs-table-accent-bg: rgb(255 255 255 / 5%);
+    
+}
+
+.table-hover>tbody>tr:hover>* {
+    --bs-table-accent-bg: rgb(231 239 244) !important;
+    color: #000000;
+    transition-duration: .5s;
+}
+
+
+.table-striped>tbody>tr{
+    border-color: #f6f6f6;
+}
+
+
+
+/* login */
+
+
+.login-container{
+    max-width: 547px;
+    width: 100%;
+}
+
+.login-logo{
+    min-height: 85px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.02);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 27px;
+}
+
+.login-logo img{
+    max-width: 264px;
+    width: 100%;
+}
+
+
+.login-form{
+    background: #FFFFFF;
+    box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.06);
+    border-radius: 15px;
+    padding: 37px 48px 42px 48px;
+}
+
+.login-form input, .docu-field-group input, .docu-field-group select{
+    min-height: 53px;
+    border-radius: 8px !important;
+    padding-left: 30px !important; 
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 38px;
+}
+
+.login-submit-btn{
+    background: #000000;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    color: #FFFFFF;
+    min-height: 53px;
+    width: 100%;
+    transition-duration: .2s;
+}
+
+.login-submit-btn:hover{
+    background: #0EC2EA;
+    color: #fff;
+    transition-duration: .4s;
+}
+
+
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #D2D2D2 !important;
+    font-weight: 600;
+    font-size: 16px;
+    color: #D2D2D2;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #D2D2D2 !important;
+    font-weight: 600;
+    font-size: 16px;
+    color: #D2D2D2;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: #D2D2D2 !important;
+    font-weight: 600;
+    font-size: 16px;
+    color: #D2D2D2;
+  }
+
+
+  .form-control:focus, .docu-form select:focus {
+    border-color: #a5a6b6;
+    box-shadow: none;
+}
+
+.footer-line{
+    position: absolute;
+    bottom: 49px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    width: 100%;
+}
+.blutrain{
+    
+    color: #0EC2EA;
+}
+
+select>option { 
+    line-height: 20px;
+    white-space: nowrap;
+    min-height: 1.2em;
+    padding: 16px;
+}
+
+
+/* docu form page */
+
+
+.docu-form{
+    background: #FFFFFF;
+    box-shadow: 0px 6px 15px rgba(14, 80, 158, 0.05);
+    border-radius: 8px;
+    padding: 43px 38px 58px 38px;
+
+}
+
+.input-group-append {
+    cursor: pointer;
+  }
+
+
+  .datepicker td, .datepicker th {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    padding: 3px 3px 6px 3px !important;
+    width: 40px;
+    height: 40px;
+}
+
+
+.datepicker-dropdown.datepicker-orient-left:after {
+    right: 33px;
+    left: unset;
+}
+.datepicker-dropdown.datepicker-orient-left:before {
+    right: 32px;
+    left: unset;
+}
+
+.datepicker-dropdown {
+    border-radius: 14px;
+}
+
+.datepicker .datepicker-switch {
+    border-radius: 8px;
+}
+
+.datepicker table tr td span{
+    height: 50px;
+    line-height: 51px;
+    border-radius: 50%;
+}
+
+.input-group-text {
+    border-radius: 0px 8px 8px 0px !important;
+    border-left: 0px !important;
+    min-height: 53px;
+    padding: 13.5px;
+}
+
+#date{
+    border-radius: 8px 0px 0px 8px !important;
+    border-right: 0px !important;
+}
+
+
+.checkbox-title{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    color: #D2D2D2;
+    padding-top: 7px;
+}
+
+.error-msg{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    color: #E43F3F;
+}
+
+
+.check-box-container{
+    border: 1px solid #D8D8D8;
+    border-radius: 8px;
+    margin-top: 20px;
+    padding: 16px 18px 0px;
+    height: 350px;
+    overflow-y: auto;
+}
+
+
+
+.docu-form .form-check-input:checked[type=checkbox],.docu-form .form-check-input[type=checkbox] {
+    height: 18px;
+    width: 18px;
+}
+
+
+.form-check label{
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 26px;
+    color: #000000;
+    margin-left: 5px;
+    margin-bottom: 7px;
+}
+
+.form-check {
+    margin-bottom: 12px;
+}
+
+
+.backbutton{
+    min-height: 48px;
+    padding: 15px 30px;
+    background: #909090;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+}
+
+.backbutton:hover{
+    background-color:  #171b2e;
+    color: #fff;
+}
+
+
+.submitbutton{
+    min-height: 48px;
+    padding: 15px 30px;
+    background: #0EC2EA;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+
+}
+
+.submitbutton:hover{
+    background-color:  #62e200;
+    color: #fff;
+}
