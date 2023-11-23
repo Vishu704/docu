@@ -57,12 +57,7 @@ class Invoice{
 			mysqli_query($this->dbConnect, $sqlInsertItem);		
 		}       	
 	}	
-	// public function getInvoiceList(){
-	// 	$sqlQuery = "
-	// 		SELECT * FROM ".$this->invoiceOrderTable." 
-	// 		WHERE user_id = '".$_SESSION['userid']."'";
-	// 	return  $this->getData($sqlQuery);
-	// }	
+	
 	public function getInvoice($invoiceId){
 		$sqlQuery = "
 			SELECT * FROM ".$this->invoiceOrderTable." 
@@ -77,19 +72,6 @@ class Invoice{
 			WHERE order_id = '$invoiceId'";
 		return  $this->getData($sqlQuery);	
 	}
-	// public function deleteInvoiceItems($invoiceId){
-	// 	$sqlQuery = "
-	// 		DELETE FROM ".$this->invoiceOrderItemTable." 
-	// 		WHERE order_id = '".$invoiceId."'";
-	// 	mysqli_query($this->dbConnect, $sqlQuery);				
-	// }
-	// public function deleteInvoice($invoiceId){
-	// 	$sqlQuery = "
-	// 		DELETE FROM ".$this->invoiceOrderTable." 
-	// 		WHERE order_id = '".$invoiceId."'";
-	// 	mysqli_query($this->dbConnect, $sqlQuery);	
-	// 	$this->deleteInvoiceItems($invoiceId);	
-	// 	return 1;
-	// }
+	
 }
 ?>

@@ -111,7 +111,7 @@ $user = $_SESSION['username'];
                     src="images/invoice.png"
                     alt=""
                 />
-                <a href="/invoice/coming"><h4>Invoice Generator</h4></a>
+                <a href="/invoice/invoice-list"><h4>Invoice Generator</h4></a>
                 </div>
             </div>
             </label> 

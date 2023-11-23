@@ -1,4 +1,4 @@
-<?php  
+<?php 
 
 require('../config.php');
 session_start();
@@ -16,7 +16,7 @@ include 'invoice.php';
 $invoice = new Invoice();
 if(!empty($_POST['company']) && $_POST['company']) {	
 	$invoice->saveInvoice($_POST);
-	header("Location:/receipt/receipt-list.php");
+	header("Location:/invoice/invoice-list.php");
 }
 ?>
 
@@ -72,33 +72,39 @@ if(!empty($_POST['company']) && $_POST['company']) {
         </div>
     </nav>
 
-
     <!-- main -->
     <div class="container pb-5">
 
       <div class="d-flex justify-content-between align-items-center py-5"> 
-        <h3 class="title m-0 mt-2">Please Receipt Information</h3>
+        <h3 class="title m-0 mt-2">Invoice Form</h3>
       </div>
 
       <div class="docu-form">
         <div class="container-fluid">
-          <form action="" method="post" role="form" name="docuform" id="re-form">
-            <div class="row">
-              <input type="hidden" class="form-control" value="<?php echo $id?>" name="user_id"/>
-              <input type="hidden" class="form-control" value="<?php echo "$_SESSION[username]"?>" name="user_name"/>
-              <div class="col-md-12 docu-field-group px-0">
-              
+          <form action="" method="post" name="docuform" id="re-form">
+          <div class="row">
+            <input type="hidden" class="form-control" value="<?php echo $id?>" name="user_id"/>
+            <input type="hidden" class="form-control" value="<?php echo "$_SESSION[username]"?>" name="user_name"/>
+            <!-- company info -->
+            <div class="col-md-6 docu-field-group ps-0 pe-2">
+              <div class="bordered" id="billing-form">
+                <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
+                  <span>Company Information*</span>  
+                </div>
                 <div class="row gx-3 gy-2">
-                  <div class="col"> 
+                  <div class="col-6"> 
                     <select id="company" class="form-select" name="company" required>
                       <option disabled selected hidden value="">Select Company</option>
-                      <option >Micron IT</option>
+                      <option>Micron IT</option>
                       <option>IT World</option> 
                     </select>
                   </div>
-                  <div class="col">
+                  <div class="col-6">
+                    <input type="text" name="transaction_id" class="form-control order_id" placeholder="Transaction ID" required>
+                  </div>
+                  <div class="col-6">
                       <div class="input-group date" id="datepicker">
-                        <input type="text" class="form-control" id="date" name="order_date"/>
+                        <input type="text" class="form-control" id="date" name="date"  placeholder="Date">
                         <span class="input-group-append">
                           <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
@@ -106,171 +112,136 @@ if(!empty($_POST['company']) && $_POST['company']) {
                         </span>
                       </div>
                   </div>
-                  <div class="col">
-                    <input type="text" name="transaction_id" class="form-control order_id" placeholder="Transaction ID" required>
+                  <div class="col-6">
+                    <div class="input-group date" id="datepicker-due-date">
+                      <input type="text" class="form-control" id="date" name="due_date" placeholder="Due Date">
+                      <span class="input-group-append">
+                        <span class="input-group-text bg-light d-block">
+                          <i class="fa fa-calendar"></i>
+                        </span>
+                      </span>
+                    </div>
                   </div>
-                  <div class="col">
-                    <input type="text" name="customer_id" class="form-control" placeholder="Customer ID" required>
-                  </div>
-                  <div class="col">
-                    <input type="text" name="company_phone" class="form-control company-contact" placeholder="Company Phone no" >
-                   </div>
-                </div>
                 
+                
+                </div>
               </div>
+            </div>
 
-              <div class="col-lg-6 docu-field-group ps-0 pe-2">
-              
-                  <div class="bordered" id="billing-form">
-                        <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
-                          <span>Billing Information*</span>  
-                        </div>
-                      <div class="row gx-3 gy-2">    
-                          <div class="col-md-4">
-                              <input type="text" name="b_name" class="form-control" placeholder="Name" required id="billing-name">
-                          </div>
-          
-                          <div class="col-md-4">
-                              <input type="email" name="b_email" class="form-control" placeholder="Email" required  id="billing-email">
-                          </div>
-          
-                          <div class="col-md-4">
-                              <input type="text" name="b_phone" class="form-control contact" placeholder="Phone No." required id="billing-phone" >
-                          </div>
-          
-                          <div class="col-md-12">
-                              <input type="text" name="b_address" class="form-control" placeholder="Billing Address:" required id="billing-address">
-                          </div>
-                      </div>
-                  </div>  
-                  
-              </div>
-
-              <div class="col-lg-6 docu-field-group ps-2 pe-0">
-                  <div class="bordered">
+            <!-- Billing info --> 
+            <div class="col-lg-6 docu-field-group ps-0 ps-2 pe-0">
+             
+                <div class="bordered" id="billing-form">
                       <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
-                          <span>Shipping Information*</span>
-                          
-                          <div class="d-flex">
-                              <label class="toggle-switch" data-bs-toggle="tooltip" data-bs-placement="top" title="Same as Billing Address">
-                                  <input type="checkbox">
-                                  <div class="toggle-switch-background">
-                                  <div class="toggle-switch-handle"></div>
-                                  </div> 
-                              </label>
-                              <p class="m-0 ms-2 p-0 checkbox-title">Auto fill Billing info!</p>
-                          </div>
+                        <span>Billing Information*</span>  
                       </div>
-                    <div class="row gx-3 gy-2">               
-                      <div class="col-md-4">
-                          <input type="text" name="s_name" class="form-control" placeholder="Name" required id="shipping-name">
-                      </div>
-      
-                      <div class="col-md-4">
-                          <input type="email" name="s_email" class="form-control" placeholder="Email" required id="shipping-email">
-                      </div>
-      
-                      <div class="col-md-4">
-                          <input type="text" name="s_phone" class="form-control phone" placeholder="Phone No." required id="shipping-phone">
-                      </div>
-      
-                      <div class="col-md-12">
-                          <input type="text" name="s_address" class="form-control" placeholder="Shipping Address:" required id="shipping-address">
-                      </div>
-                    </div> 
-                  </div>
-                  
-              </div>
+                    <div class="row gx-3 gy-2">    
+                        <div class="col-md-6">
+                            <input type="text" name="b_name" class="form-control" placeholder="Name" required id="billing-name">
+                        </div>
+        
+                        <div class="col-md-6">
+                            <input type="email" name="b_email" class="form-control" placeholder="Email" required  id="billing-email">
+                        </div> 
 
-              <div class="receipt-container docu-field-group">
-                <table class="_table">
-                  <thead>
-                    <tr>
-                      <th>SERVICE/SUBSCRIPTION</th>
-                      <th>QUANTITY</th>
-                      <th>DURATION</th>
-                      <th>TOTAL</th>
-                      <th width="50px">
-                        <div class="action_container">
-                          <a class="success" onclick="create_tr('table_body')">
-                            <i class="fa fa-plus"></i>
-                          </a>
+                        <div class="col-md-12">
+                            <input type="text" name="b_address" class="form-control" placeholder="Billing Address:" required id="billing-address">
                         </div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="table_body">
-                    <tr>
-                      <td>
-                        <input type="text" name="name[]" class="form-control mb-0" placeholder="Xyz" required>
-                      </td>
-                      <td>
-                        <input type="text" name="coverage[]" class="form-control mb-0" placeholder="5" required>
-                      </td>
-                      <td>
-                        <input type="text" name="duration[]" class="form-control mb-0" placeholder="1 month" required>
-                      </td>
-                      <td>
-                        <input type="text" name="total[]" class="form-control mb-0 amount" placeholder="500" required>
-                      </td>
-                      <td>
-                        <div class="action_container">
-                          <button class="danger" onclick="remove_tr(this)">
-                            <i class="fa fa-close"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              
-              <div class="col-lg-2 docu-field-group ps-0 pe-2" style="margin-top: 25px;">
-                <div class="bordered">
-                  <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
-                    <span>Currency*</span> 
-                  </div>
-                  <select id="company" class="form-select px-2 currency-change" name="currency">
+                    </div>
+                </div>  
+                
+            </div> 
+
+            <div class="receipt-container docu-field-group">
+              <table class="_table">
+                <thead>
+                  <tr> 
+                    <th>ITEM NAME</th>
+                    <th>ITEM Services</th>
+                    <th class="mw-12">QUANTITY</th>
+                    <th class="mw-12">Rate</th>
+                    <th class="mw-12">AMOUNT</th>
+                    <th width="50px">
+                      <div class="action_container">
+                        <button class="success" onclick="create_tr('table_body')">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="table_body">
+                  <tr>
+                    <td style="max-width: 150px;">
+                      <input type="text" name="name[]" class="form-control mb-0" placeholder="Xyz">
+                    </td>
+                    <td>
+                      <input type="text" name="services[]" class="form-control mb-0" placeholder="Services separate with comma (,)"  data-bs-toggle="tooltip" data-bs-placement="bottom" title=" 
+                      Example : Cloud Server, Software Opt, Network Firewall">
+                    </td>
+                    <td class="mw-12">
+                      <input type="text" name="quantity[]" class="form-control mb-0" placeholder="Quantity">
+                    </td>
+                    <td class="mw-12">
+                      <input type="text" name="rate[]" class="form-control mb-0" placeholder="Price">
+                    </td>
+                    <td class="mw-12">
+                      <input type="text" name="amount[]" class="form-control mb-0 amount" placeholder="Total">
+                      <input type="hidden" id="total_amount" name="total_amount" class="form-control">
+                    </td>
+                    <td>
+                      <div class="action_container">
+                        <button class="danger" onclick="remove_tr(this)">
+                          <i class="fa fa-close"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="col-lg-2 docu-field-group ps-0 pe-2" style="margin-top: 25px;">
+              <div class="bordered">
+                <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
+                  <span>Currency*</span> 
+                </div>
+                <select id="company" class="form-select px-2 currency-change" name="currency" required>
                     <option disabled selected hidden value="">Currency</option> 
                     <option>US$</option> 
                     <option>CAD$</option>
                     <option>A$</option>
                     <option>EUR €</option>  
                     <option>GBP£</option>  
-                  </select>
-                </div> 
-              </div>
+                </select>
+              </div> 
+            </div>
+ 
 
-              <div class="col-lg-5 docu-field-group px-2" style="margin-top: 25px;">
-                <div class="bordered">
-                    <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
-                        <span>Discount & Tax*</span> 
-                    </div>
-                  <div class="row gx-3 gy-2">               
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="discount" placeholder="Discount(%)">
-                    </div>
-    
-                    <div class="col-md-6">
-                        <input type="text" name="tax" class="form-control" placeholder="Tax(%)">
-                    </div>
+            <div class="col-md-5 docu-field-group ps-2 pe-2" style="margin-top: 25px;">
+              <div class="bordered" id="billing-form">
+                <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
+                  <span>Notice</span>  
+                </div>
+                <div class="row gx-3 gy-2">
+                  <div class="col-12"> 
+                    <input type="text" name="notice" class="form-control" placeholder="Message" required="" id="shipping-address">
+                  </div>  
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5 docu-field-group ps-2 pe-0" style="margin-top: 25px;">
+              <div class="bordered" id="billing-form">
+                <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
+                  <span>Payment Link:</span>  
+                </div>
+                <div class="row gx-3 gy-2"> 
+                  <div class="col-12">
+                    <input type="text" name="payment_link" class="form-control" placeholder="Payment Link:" required="" id="shipping-address">
                   </div> 
                 </div>
-            </div>
-
-            <div class="col-lg-5 docu-field-group ps-2 pe-0"  style="margin-top: 25px;">
-              <div class="bordered">       
-                  <div class="col-md-12">
-                    <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
-                      <span>Notice</span> 
-                      <input type="hidden" id="total_amount" name="total_amount" class="form-control">
-                  </div>
-                      <input type="text" name="notes" class="form-control" placeholder="Message"  id="shipping-address">
-                  </div> 
               </div>
-              
             </div>
-
             <div class="col-12 px-0 pt-4">
               
               <div class="d-flex justify-content-between">
@@ -286,14 +257,12 @@ if(!empty($_POST['company']) && $_POST['company']) {
           </div>
         </div>
       </div>
-
     </div>
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
     <script type="text/javascript">
       $(function(){
@@ -314,7 +283,8 @@ if(!empty($_POST['company']) && $_POST['company']) {
           total_amount();
         });
       });
-    </script>          
+    </script>
+
     <script>
         // tooltip code
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -395,7 +365,7 @@ if(!empty($_POST['company']) && $_POST['company']) {
 
     <script>
       $(function(){
-        $('#datepicker').datepicker({ format: 'mm-dd-yyyy' });
+        $('#datepicker,#datepicker-due-date').datepicker({ format: 'mm-dd-yyyy' });
       });
 
     </script>
@@ -450,7 +420,6 @@ if(!empty($_POST['company']) && $_POST['company']) {
 
 
 
-
     </script>
 
     <script>
@@ -494,19 +463,19 @@ if(!empty($_POST['company']) && $_POST['company']) {
           $('.phone').val(filterval);
         }
         });
-        
-        $('.company-contact').on('keyup', function() {
 
+        
+        $('.company-contact').on('keyup', function() { 
         const ph_number = $(this).val();
         var intRegex = /^\d+$/;
-        var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
-
-
+        var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/; 
         if(intRegex.test(ph_number) != true || floatRegex.test(ph_number)!= true) {
           const filterval = ph_number.replace(/[^0-9\.]/g,'');
           $('.company-contact').val(filterval);
         }
         });
+
+        
 
     </script>
 

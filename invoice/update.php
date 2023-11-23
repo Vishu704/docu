@@ -1,4 +1,4 @@
-<?php  
+<?php 
 
 require('../config.php');
 session_start();
@@ -7,16 +7,15 @@ if(empty($_SESSION['username']))
   header('location:../login.php');
 }
 
-$user = $_SESSION['username'];
-$u_query = mysqli_query($conn,"SELECT * FROM registered_users WHERE username = '$user'");
-$row = mysqli_fetch_array($u_query);
-$id = $row['id'];
-
 include 'invoice.php';
 $invoice = new Invoice();
-if(!empty($_POST['company']) && $_POST['company']) {	
-	$invoice->saveInvoice($_POST);
-	header("Location:/receipt/receipt-list.php");
+if(!empty($_POST['company']) && $_POST['company'] && !empty($_POST['invoiceId']) && $_POST['invoiceId']) {	
+	$invoice->updateInvoice($_POST);	
+	header("Location:receipt-list.php");	
+}
+if(!empty($_GET['update_id']) && $_GET['update_id']) {
+	$invoiceValues = $invoice->getInvoice($_GET['update_id']);		
+	$invoiceItems = $invoice->getInvoiceItems($_GET['update_id']);		
 }
 ?>
 
@@ -84,21 +83,35 @@ if(!empty($_POST['company']) && $_POST['company']) {
         <div class="container-fluid">
           <form action="" method="post" role="form" name="docuform" id="re-form">
             <div class="row">
-              <input type="hidden" class="form-control" value="<?php echo $id?>" name="user_id"/>
+              <!-- <input type="hidden" class="form-control" value="" name="user_id"/> -->
               <input type="hidden" class="form-control" value="<?php echo "$_SESSION[username]"?>" name="user_name"/>
               <div class="col-md-12 docu-field-group px-0">
               
                 <div class="row gx-3 gy-2">
-                  <div class="col"> 
-                    <select id="company" class="form-select" name="company" required>
-                      <option disabled selected hidden value="">Select Company</option>
-                      <option >Micron IT</option>
-                      <option>IT World</option> 
+                  <div class="col-md-3"> 
+                    <select id="company" class="form-select" name="company">
+                      <option disabled selected>Select Company</option>
+                      <option 
+                      <?php
+                        if($invoiceValues['company'] == 'Micron IT')
+                        {
+                            echo "selected";
+                        }
+                      ?>
+                    >Micron IT</option>
+                      <option
+                      <?php
+                        if($invoiceValues['company'] == 'IT World')
+                        {
+                            echo "selected";
+                        }
+                      ?>
+                      >IT World</option> 
                     </select>
                   </div>
-                  <div class="col">
+                  <div class="col-md-3">
                       <div class="input-group date" id="datepicker">
-                        <input type="text" class="form-control" id="date" name="order_date"/>
+                        <input type="text" class="form-control" id="date" value="<?php echo $invoiceValues['order_date']; ?>" name="order_date"/ >
                         <span class="input-group-append">
                           <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
@@ -106,15 +119,12 @@ if(!empty($_POST['company']) && $_POST['company']) {
                         </span>
                       </div>
                   </div>
-                  <div class="col">
-                    <input type="text" name="transaction_id" class="form-control order_id" placeholder="Transaction ID" required>
+                  <div class="col-md-3">
+                    <input type="text" name="transaction_id" value="<?php echo $invoiceValues['transaction_id']; ?>" class="form-control order_id" placeholder="Transaction ID" required>
                   </div>
-                  <div class="col">
-                    <input type="text" name="customer_id" class="form-control" placeholder="Customer ID" required>
+                  <div class="col-md-3">
+                    <input type="text" name="company_phone" value="<?php echo $invoiceValues['company_phone']; ?>" class="form-control company-contact" placeholder="Company Phone no" >
                   </div>
-                  <div class="col">
-                    <input type="text" name="company_phone" class="form-control company-contact" placeholder="Company Phone no" >
-                   </div>
                 </div>
                 
               </div>
@@ -127,19 +137,19 @@ if(!empty($_POST['company']) && $_POST['company']) {
                         </div>
                       <div class="row gx-3 gy-2">    
                           <div class="col-md-4">
-                              <input type="text" name="b_name" class="form-control" placeholder="Name" required id="billing-name">
+                              <input type="text" value="<?php echo $invoiceValues['b_name']; ?>" name="b_name" class="form-control" placeholder="Name" required id="billing-name">
                           </div>
           
                           <div class="col-md-4">
-                              <input type="email" name="b_email" class="form-control" placeholder="Email" required  id="billing-email">
+                              <input type="email" value="<?php echo $invoiceValues['b_email']; ?>" name="b_email" class="form-control" placeholder="Email" required  id="billing-email">
                           </div>
           
                           <div class="col-md-4">
-                              <input type="text" name="b_phone" class="form-control contact" placeholder="Phone No." required id="billing-phone" >
+                              <input type="text" value="<?php echo $invoiceValues['b_phone']; ?>" name="b_phone" class="form-control contact" placeholder="Phone No." required id="billing-phone" >
                           </div>
           
                           <div class="col-md-12">
-                              <input type="text" name="b_address" class="form-control" placeholder="Billing Address:" required id="billing-address">
+                              <input type="text" value="<?php echo $invoiceValues['b_address']; ?>" name="b_address" class="form-control" placeholder="Billing Address:" required id="billing-address">
                           </div>
                       </div>
                   </div>  
@@ -152,7 +162,7 @@ if(!empty($_POST['company']) && $_POST['company']) {
                           <span>Shipping Information*</span>
                           
                           <div class="d-flex">
-                              <label class="toggle-switch" data-bs-toggle="tooltip" data-bs-placement="top" title="Same as Billing Address">
+                              <label class="toggle-switch" data-bs-toggle="tooltip" data-bs-placement="top" title="Activate if same info. as Billing">
                                   <input type="checkbox">
                                   <div class="toggle-switch-background">
                                   <div class="toggle-switch-handle"></div>
@@ -163,19 +173,19 @@ if(!empty($_POST['company']) && $_POST['company']) {
                       </div>
                     <div class="row gx-3 gy-2">               
                       <div class="col-md-4">
-                          <input type="text" name="s_name" class="form-control" placeholder="Name" required id="shipping-name">
+                          <input type="text" value="<?php echo $invoiceValues['s_name']; ?>" name="s_name" class="form-control" placeholder="Name" required id="shipping-name">
                       </div>
       
                       <div class="col-md-4">
-                          <input type="email" name="s_email" class="form-control" placeholder="Email" required id="shipping-email">
+                          <input type="email" value="<?php echo $invoiceValues['s_email']; ?>" name="s_email" class="form-control" placeholder="Email" required id="shipping-email">
                       </div>
       
                       <div class="col-md-4">
-                          <input type="text" name="s_phone" class="form-control phone" placeholder="Phone No." required id="shipping-phone">
+                          <input type="text" value="<?php echo $invoiceValues['s_phone']; ?>" name="s_phone" class="form-control phone" placeholder="Phone No." required id="shipping-phone">
                       </div>
       
                       <div class="col-md-12">
-                          <input type="text" name="s_address" class="form-control" placeholder="Shipping Address:" required id="shipping-address">
+                          <input type="text" value="<?php echo $invoiceValues['s_address']; ?>" name="s_address" class="form-control" placeholder="Shipping Address:" required id="shipping-address">
                       </div>
                     </div> 
                   </div>
@@ -187,7 +197,7 @@ if(!empty($_POST['company']) && $_POST['company']) {
                   <thead>
                     <tr>
                       <th>SERVICE/SUBSCRIPTION</th>
-                      <th>QUANTITY</th>
+                      <th>COVERAGE</th>
                       <th>DURATION</th>
                       <th>TOTAL</th>
                       <th width="50px">
@@ -200,72 +210,63 @@ if(!empty($_POST['company']) && $_POST['company']) {
                     </tr>
                   </thead>
                   <tbody id="table_body">
-                    <tr>
-                      <td>
-                        <input type="text" name="name[]" class="form-control mb-0" placeholder="Xyz" required>
-                      </td>
-                      <td>
-                        <input type="text" name="coverage[]" class="form-control mb-0" placeholder="5" required>
-                      </td>
-                      <td>
-                        <input type="text" name="duration[]" class="form-control mb-0" placeholder="1 month" required>
-                      </td>
-                      <td>
-                        <input type="text" name="total[]" class="form-control mb-0 amount" placeholder="500" required>
-                      </td>
-                      <td>
-                        <div class="action_container">
-                          <button class="danger" onclick="remove_tr(this)">
-                            <i class="fa fa-close"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
+                    <?php 
+                        $count = 0;
+                        foreach($invoiceItems as $invoiceItem){
+                            $count++;
+                    ?>
+                        <tr>
+                        <td>
+                            <input type="text" value="<?php echo $invoiceItem['name']; ?>" name="name[]" id="name_<?php echo $count; ?>" class="form-control mb-0" placeholder="Xyz" required>
+                        </td>
+                        <td>
+                            <input type="text" value="<?php echo $invoiceItem['coverage']; ?>" name="coverage[]" id="coverage_<?php echo $count; ?>" class="form-control mb-0" placeholder="5" required>
+                        </td>
+                        <td>
+                            <input type="text" value="<?php echo $invoiceItem['duration']; ?>" name="duration[]" id="duration_<?php echo $count; ?>" class="form-control mb-0" placeholder="1 month" required>
+                        </td>
+                        <td>
+                            <input type="text" value="<?php echo $invoiceItem['total']; ?>" name="total[]" id="total_<?php echo $count; ?>" class="form-control mb-0 amount" placeholder="500" required>
+                        </td>
+                        <td>
+                            <div class="action_container">
+                            <button class="danger" onclick="remove_tr(this)">
+                                <i class="fa fa-close"></i>
+                            </button>
+                            </div>
+                        </td>
+                        </tr>
+                    <?php } ?>
                   </tbody>
                 </table>
               </div>
               
-              <div class="col-lg-2 docu-field-group ps-0 pe-2" style="margin-top: 25px;">
-                <div class="bordered">
-                  <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
-                    <span>Currency*</span> 
-                  </div>
-                  <select id="company" class="form-select px-2 currency-change" name="currency">
-                    <option disabled selected hidden value="">Currency</option> 
-                    <option>US$</option> 
-                    <option>CAD$</option>
-                    <option>A$</option>
-                    <option>EUR €</option>  
-                    <option>GBP£</option>  
-                  </select>
-                </div> 
-              </div>
-
-              <div class="col-lg-5 docu-field-group px-2" style="margin-top: 25px;">
+              <div class="col-lg-6 docu-field-group ps-0 pe-2" style="margin-top: 25px;">
                 <div class="bordered">
                     <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
                         <span>Discount & Tax*</span> 
                     </div>
                   <div class="row gx-3 gy-2">               
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="discount" placeholder="Discount(%)">
+                        <input type="text" value="<?php echo $invoiceValues['discount']; ?>" name="discount" class="form-control" placeholder="Discount(%)">
                     </div>
     
                     <div class="col-md-6">
-                        <input type="text" name="tax" class="form-control" placeholder="Tax(%)">
+                        <input type="text" value="<?php echo $invoiceValues['tax']; ?>" name="tax" class="form-control" placeholder="Tax(%)">
                     </div>
                   </div> 
                 </div>
+                <input type="hidden" value="<?php echo $invoiceValues['id']; ?>" class="form-control" name="invoiceId" id="invoiceId">
             </div>
 
-            <div class="col-lg-5 docu-field-group ps-2 pe-0"  style="margin-top: 25px;">
+            <div class="col-lg-6 docu-field-group ps-2 pe-0"  style="margin-top: 25px;">
               <div class="bordered">       
                   <div class="col-md-12">
                     <div class="checkbox-title d-flex justify-content-between px-2 pb-4"> 
                       <span>Notice</span> 
                       <input type="hidden" id="total_amount" name="total_amount" class="form-control">
                   </div>
-                      <input type="text" name="notes" class="form-control" placeholder="Message"  id="shipping-address">
+                      <input type="text" name="notes" class="form-control" placeholder="Message" required="" id="shipping-address">
                   </div> 
               </div>
               
@@ -275,7 +276,7 @@ if(!empty($_POST['company']) && $_POST['company']) {
               
               <div class="d-flex justify-content-between">
 
-                <a href="index.php" class="btn backbutton">Cancel</a>
+                <a href="/receipt/receipt-form.php" class="btn backbutton">Cancel</a>
                 <button type="submit" class="btn submitbutton" name="submit">Submit</button>
 
               </div>
@@ -293,7 +294,6 @@ if(!empty($_POST['company']) && $_POST['company']) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
     <script type="text/javascript">
       $(function(){
@@ -314,7 +314,7 @@ if(!empty($_POST['company']) && $_POST['company']) {
           total_amount();
         });
       });
-    </script>          
+    </script>      
     <script>
         // tooltip code
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -395,7 +395,7 @@ if(!empty($_POST['company']) && $_POST['company']) {
 
     <script>
       $(function(){
-        $('#datepicker').datepicker({ format: 'mm-dd-yyyy' });
+        $('#datepicker').datepicker({ format: 'dd-mm-yyyy' });
       });
 
     </script>

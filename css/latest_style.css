@@ -22,9 +22,7 @@ table.dataTable.table-striped>tbody>tr.odd>*{
 ::-webkit-scrollbar {
     width: 7px;
 }
-th.mw-12, td.mw-12 {
-    width: 12% !important;
-}
+
 .active>.page-link, .page-link.active{
     background-color: #4CB4FF;
     border-color: #4CB4FF;
@@ -648,7 +646,8 @@ select>option {
   }
   label.radio-card .card-content img {
     margin-bottom: 15px;
-    max-width: 100%; 
+    max-width: 100%;
+    margin-top: 20px;
     }
   label.radio-card .card-content h4 {
     font-size: 20px;
