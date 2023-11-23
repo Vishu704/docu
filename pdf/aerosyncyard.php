@@ -48,8 +48,8 @@ $comments = $row['comments'];
             }
             
             .btn {
-    border-radius: 50px;
-}
+                border-radius: 50px;
+            }
             table {  
                 font-family: arial, sans-serif;  
                 border-collapse: collapse;  

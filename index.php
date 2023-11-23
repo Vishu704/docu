@@ -101,6 +101,22 @@ $user = $_SESSION['username'];
             </label> 
         <!-- </a> -->
 
+        <!-- <a href="/receipt/receipt-list"> -->
+        <label for="radio-card-2" class="radio-card">
+            <input type="radio" name="radio-card" id="radio-card-2" />
+            <div class="card-content-wrapper">
+                <span class="check-icon"></span>
+                <div class="card-content">
+                <img
+                    src="images/invoice.png"
+                    alt=""
+                />
+                <a href="/invoice/coming"><h4>Invoice Generator</h4></a>
+                </div>
+            </div>
+            </label> 
+        <!-- </a> -->
+
     </div> 
 
 
