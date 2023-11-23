@@ -52,6 +52,10 @@ $results = mysqli_query($conn,$sqls);
                 width: 100%;  
                 font-family: 'Poppins', sans-serif;
             }  
+
+            .btn {
+                border-radius: 50px;
+            }
              
             td, th {   
                 padding: 15px 15px 0px 15px;
